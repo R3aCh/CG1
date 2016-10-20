@@ -8,7 +8,7 @@
    tu berlin
    ------------------------------------------------------------- */
 
-#include "glIncludes.hpp"
+#include "GLIncludes.hpp"
 
 #include <iostream>
 
