@@ -244,8 +244,7 @@ void Node::reset(){
   // reset rotations
   // XXX
 
-  // INSERT YOUR CODE HERE
+  rotation = initialRotation;
 
-  
   // END XXX
 }
