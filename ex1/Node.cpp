@@ -93,25 +93,24 @@ void Node::render(){
   // translate to final position
   // XXX
 
-  // INSERT YOUR CODE HERE
+  glTranslatef(position[0], position[1], position[2]);
   
   
   // END XXX
 
   // translate node center to joint position
   // XXX
+  glTranslatef(joint[0], joint[1], joint[2]);
 
-  // INSERT YOUR CODE HERE
-
-  
   // END XXX
 
   // apply this node's rotation
   // XXX
 
-  // INSERT YOUR CODE HERE
+  glRotatef(rotation[0], 1, 0, 0);
+  glRotatef(rotation[1], 0, 1, 0);
+  glRotatef(rotation[2], 0, 0, 1);
 
-  
   // END XXX
 
   // draw Joint (rotation center)
@@ -120,8 +119,7 @@ void Node::render(){
   // translate center of rotation into limb's origin
   // XXX
 
-  // INSERT YOUR CODE HERE
-  
+  glTranslatef(-joint[0], -joint[1], -joint[2]);
 
   // END XXX
 
