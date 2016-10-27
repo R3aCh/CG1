@@ -167,8 +167,7 @@ void Node::drawJoint(){
   // (with glutwiredphere...)
   // XXX
 
-  // INSERT YOUR CODE HERE
-
+  glutWireSphere(15.0, 15.0, 15.0);
 
   // END XXX
 
@@ -177,8 +176,22 @@ void Node::drawJoint(){
   // XXX: DRAW X,Y AND Z AXES IN RED,GREEN AND BLUE
   //      SEE PROVIDED cg1_ex1.exe (win32) AND cg1_ex1 (linux)
 
-  // INSERT YOUR CODE HERE
+  //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+  // x
+  glColor3f(1.0f, 0.0f, 0.0f);
+  glVertex3f(0.0f, 0.0f, 0.0f);
+  glVertex3f(50.0f, 0.0f, 0.0f);
+
+  // y
+  glColor3f(0.0f, 1.0f, 0.0f);
+  glVertex3f(0.0f, 0.0f, 0.0f);
+  glVertex3f(0.0f, 50.0f, 0.0f);
+
+  // z
+  glColor3f(0.0f, 0.0f, 1.0f);
+  glVertex3f(0.0f, 0.0f, 0.0f);
+  glVertex3f(0.0f, 0.0f, 50.0f);
 
   // END XXX
 
