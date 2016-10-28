@@ -168,9 +168,8 @@ void Context::addMenu(std::string text[], unsigned int options[], size_t numOpti
   
     // XXX: add menu entry
     
-    // INSERT YOUR CODE HERE
-    
-    
+    glutAddMenuEntry(text[i].c_str(), options[i]);
+
     // END XXX
     
   }
