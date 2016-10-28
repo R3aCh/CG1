@@ -135,9 +135,11 @@ void SceneGraph::clear(Node *node){
 void SceneGraph::reset(Node* node){
 
   // XXX
-  
-  node->reset();
 
-  
+  if (node == NULL) return;
+  node->reset();
+  reset(node->getChild());
+  reset(node->getNext());
+
   // END XXX
 }
