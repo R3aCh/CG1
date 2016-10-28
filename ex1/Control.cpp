@@ -186,9 +186,12 @@ bool Control::keyPressed(unsigned char key){
 
     // XXX: reset rotations
 
-    // INSERT YOUR CODE HERE
+    case 'r':
+    case 'R':
+      sceneGraph->reset();
+      redisplay= true;
+      break;
 
-    
     // END XXX
 
   default:
