@@ -153,10 +153,10 @@ void Context::registerCallbacks(void){
   glutMouseFunc(mousePressed);
 
   // XXX: register menu callback and attach to right mouse button
-  
-  // INSERT YOUR CODE HERE
 
-  
+  glutCreateMenu(menu);
+  glutAttachMenu(GLUT_RIGHT_BUTTON);
+
   // END XXX
   
   return;
