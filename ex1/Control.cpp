@@ -27,8 +27,8 @@ using namespace glm;
 using namespace std;
 
 // TODO: add menu Option for reset
-string Control::menuText[]= {"quit"};
-unsigned int Control::menuOptions[]= {1};
+string Control::menuText[]= {"quit", "reset"};
+unsigned int Control::menuOptions[]= {1, 2};
 
 // field of view (in degrees)
 GLfloat Control::fov= radians(40.0);
@@ -241,9 +241,10 @@ bool Control::menu(int id){
   
     // XXX: reset rotations
 
-    // INSERT YOUR CODE HERE
+  case 2:
+    sceneGraph->reset();
+    break;
 
-    
     // END XXX
 
     
