@@ -33,9 +33,48 @@ Node *Robot::buildRobot(){
   
   // XXX: implement more body/robot/whatever parts here
   
-  // INSERT YOUR CODE HERE
+	Node *head = new Node(0, 195, 0,
+												120, 50, 75,
+												0, -40, 0,
+												0, 0, 0);
 
-  
+	Node *hat = new Node(0, 45, 0,
+											 100, 5, 100,
+											 0, 0, 0,
+											 0, 0, 0);
+
+	hat->setParent(head);
+
+	Node *left_arm = new Node(-120, 20, 0,
+														20, 150, 30,
+														0, 85, 0,
+														0, 0, 0);
+
+	Node *right_arm = new Node(120, 20, 0,
+														 20, 150, 30,
+														 0, 85, 0,
+														 0, 0, 0);
+
+	Node *left_leg = new Node(-40, -270, 0,
+														50, 200, 50,
+														0, 110, 0,
+														0, 0, 0);
+
+	Node *right_leg = new Node(40, -270, 0,
+														 50, 200, 50,
+														 0, 110, 0,
+														 0, 0, 0);
+
+	Node *left_foot = new Node(0 ,-115, 20,
+														 50, 10, 100,
+														 0, 5, -20,
+														 0, 0, 0);
+
+	Node *right_foot = new Node(0, -115, 20,
+															50, 10, 100,
+															0, 5, -20,
+															0, 0, 0);
+
   // END XXX
   
   // finally, attach the robot/model parts
@@ -44,9 +83,17 @@ Node *Robot::buildRobot(){
   
   // XXX: attach other body parts here
 
-  // INSERT YOUR CODE HERE
+	head->setParent(torso);
 
-  
+	right_arm->setParent(torso);
+	left_arm->setParent(torso);
+
+	right_leg->setParent(torso);
+	left_leg->setParent(torso);
+
+	left_foot->setParent(left_leg);
+	right_foot->setParent(right_leg);
+
   // END XXX
   
   // return root node
