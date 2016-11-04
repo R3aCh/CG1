@@ -27,6 +27,8 @@
 using namespace glm;
 using namespace std;
 
+unsigned char id_count = 1;
+
 // constructor
 // x,y,z: position of node center of mass relative to parent node center
 // length, height, and width of this body part
@@ -55,6 +57,8 @@ Node::Node(float x, float y, float z,
   child= NULL;
   previous= NULL;
   next= NULL;
+
+  id= id_count++;
 }
 
 // destructor
@@ -141,6 +145,8 @@ void Node::draw(){
   if(selected) glLightModelfv(GL_LIGHT_MODEL_AMBIENT, red);
 
   glPushMatrix();
+
+  glStencilFunc(GL_ALWAYS, id, 0xFF); // ORDER MATTERS!
 
   glScalef(dimension.x, dimension.y, dimension.z);
   glutSolidCube(1.0);

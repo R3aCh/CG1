@@ -40,7 +40,7 @@ void Context::init(int argc, char **argv){
 
   // create window with glut
   glutInit(&argc, argv);
-  glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
+  glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH | GLUT_STENCIL );
   glutInitWindowSize(windowSize.x, windowSize.y);
   glutInitWindowPosition(windowPosition.x, windowPosition.y);
   glutCreateWindow(title.c_str());
@@ -53,8 +53,12 @@ void Context::init(int argc, char **argv){
 void Context::display(void){
   
   // clear color and depth buffer
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  
+  glClearStencil(0);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+  glEnable(GL_STENCIL_TEST);
+  glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+
   Control::display();
 }
 

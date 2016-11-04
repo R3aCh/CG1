@@ -74,6 +74,23 @@ void SceneGraph::right(){
   selected->select();
 }
 
+void SceneGraph::selectById(unsigned char id){
+  Node *new_selected = findNode(id, root);
+  if (!new_selected) return;
+  selected->deselect();
+  selected = new_selected;
+  selected->select();
+}
+
+Node* SceneGraph::findNode(unsigned char id, Node *node){
+  if (node == NULL) return NULL;
+  if (node->id == id) return node;
+  Node *result;
+  if (result = findNode(id, node->getChild())) return result;
+  if (result = findNode(id, node->getNext())) return result;
+  return NULL;
+}
+
 // increment / decrement rotation of selected node
 void SceneGraph::rotate(float x, float y, float z){
   selected->rotate(x, y, z);

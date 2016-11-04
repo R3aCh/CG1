@@ -31,6 +31,8 @@ public:
   void left();
   void right();
 
+  void selectById(unsigned char id);
+
   // increment / decrement rotation of selected node
   void rotate(float x, float y, float z);
 
@@ -47,6 +49,9 @@ private:
 
   // destroy all nodes
   void clear(Node *node);
+
+  // find a node by its id
+  Node* findNode(unsigned char id, Node *node);
 
   // root node
   Node *root; 

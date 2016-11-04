@@ -265,7 +265,9 @@ bool Control::menu(int id){
 
 // mouse pressed control
 bool Control::mousePressed(vec2 mouse, vec2 windowSize){
-  
+  unsigned char index;
+  glReadPixels(mouse.x, windowSize.y - mouse.y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_BYTE, &index);
+  sceneGraph->selectById(index);
   return true; //always redisplay
 }
 
