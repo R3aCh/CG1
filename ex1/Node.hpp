@@ -87,6 +87,8 @@ protected:
   // of an individual node
   void drawJoint();
 
+  void drawVirtualTrackball();
+
   // increment / decrement Euler rotation
   void rotate(float x, float y, float z);
 

@@ -120,6 +120,9 @@ void Node::render(){
   // draw Joint (rotation center)
   drawJoint();
 
+  // draw virtual trackball
+  drawVirtualTrackball();
+
   // translate center of rotation into limb's origin
   // XXX
 
@@ -207,6 +210,20 @@ void Node::drawJoint(){
   glPopAttrib();
 }
 
+void Node::drawVirtualTrackball(){
+  if (!selected) return;
+
+  float a = std::abs(joint.x) + dimension.x/2;
+  float b = std::abs(joint.y) + dimension.y/2;
+  float c = std::abs(joint.z) + dimension.z/2;
+  float radius = sqrt(a*a + b*b + c*c);
+
+  glPushAttrib(GL_ENABLE_BIT | GL_CURRENT_BIT);
+  glDisable(GL_LIGHTING);
+  glColor4f(0.7f, 0.7f, 0.7f, 0.5f);
+  glutWireSphere(radius, 50, 10);
+  glPopAttrib();
+}
 
 // increment / decrement rotation
 void Node::rotate(float x, float y, float z){
