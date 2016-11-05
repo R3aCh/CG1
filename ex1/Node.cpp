@@ -173,7 +173,7 @@ void Node::drawJoint(){
   // (with glutwiredphere...)
   // XXX
 
-  glutWireSphere(15.0, 15.0, 15.0);
+  glutWireSphere(15.0, 10, 10);
 
   // END XXX
 
