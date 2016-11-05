@@ -10,7 +10,10 @@
 
 #include "GLIncludes.hpp"
 
-#include <iostream> 
+#include <iostream>
+
+#define _USE_MATH_DEFINES
+#include <cmath>
 
 #include "Control.hpp"
 #include "Context.hpp"
@@ -275,11 +278,72 @@ bool Control::mousePressed(vec2 mouse, vec2 windowSize){
   return true; //always redisplay
 }
 
+// Sources:
+// http://www.gukewen.sdu.edu.cn/panrj/courses/4-AngelCGE2-Virtual-Trackball.pdf
+// http://nehe.gamedev.net/tutorial/arcball_rotation/19003/
+static void mousePositionToSpherePoint(float x, float y, float width, float height, vec3 &v) {
+  float square_len;
+
+  v.x = (2.0f*x - width) / width;
+  v.y = (height - 2.0f*y) / height;
+  square_len = v.x*v.x + v.y*v.y;
+
+  if (square_len > 1.0f) {
+    float norm = 1.0f / sqrt(square_len);
+    v.x *= norm;
+    v.y *= norm;
+    v.z = 0.0f;
+  }
+  else
+    v.z = sqrt(1.0f - square_len);
+}
+
+// Stolen and adapted from this tutorial:
+// http://nehe.gamedev.net/tutorial/arcball_rotation/19003/
+void quaterionToEulerianAngle(const vec4& q, float& pitch, float& roll, float& yaw)
+{
+  float ysqr = q.y * q.y;
+  float t0 = -2.0f * (ysqr + q.z * q.z) + 1.0f;
+  float t1 = +2.0f * (q.x * q.y - q.w * q.z);
+  float t2 = -2.0f * (q.x * q.z + q.w * q.y);
+  float t3 = +2.0f * (q.y * q.z - q.w * q.x);
+  float t4 = -2.0f * (q.x * q.x + ysqr) + 1.0f;
+
+  t2 = t2 > 1.0f ? 1.0f : t2;
+  t2 = t2 < -1.0f ? -1.0f : t2;
+
+  pitch = std::asin(t2);
+  roll = std::atan2(t3, t4);
+  yaw = std::atan2(t1, t0);
+}
+
 // mouse dragged control
 bool Control::mouseDragged(vec2 previousMouse, vec2 mouse, vec2 windowSize){
 
-  sceneGraph->rotate(mouse.y-previousMouse.y, mouse.x-previousMouse.x, 0);
-  
+  //sceneGraph->rotate(mouse.y-previousMouse.y, mouse.x-previousMouse.x, 0);
+
+  // transform mouse coordinates into points on our virtual trackball sphere
+  vec3 previousPos, pos;
+  mousePositionToSpherePoint(previousMouse.x, previousMouse.y, windowSize.x, windowSize.y, previousPos);
+  mousePositionToSpherePoint(mouse.x, mouse.y, windowSize.x, windowSize.y, pos);
+
+  // our rotation axis and angle
+  vec3 axis = cross(previousPos, pos);
+
+  // fill a quaternion with the rotation axis and the rotation angle
+  vec4 quat;
+  quat.x = axis.x;
+  quat.y = axis.y;
+  quat.z = axis.z;
+  quat.w = dot(previousPos, pos);
+
+  // now transform the quaternion into Euler angles
+  float pitch, roll, yaw;
+  quaterionToEulerianAngle(quat, pitch, roll, yaw);
+
+  // apply the rotation to the currently selected object
+  sceneGraph->rotate(true ? -roll * 180.0f/M_PI : 0.0f,  true ? -pitch * 180.0f/M_PI : 0.0f, true ? -yaw * 180.0f/M_PI : 0.0f);
+
   return true; //always redisplay
 }
 
