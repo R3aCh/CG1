@@ -83,6 +83,10 @@ void Control::init(){
   
   // enable normalization of vertex normals
   glEnable(GL_NORMALIZE);
+
+  // enable transparency support
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   
   // some output to console
   cout << "--------------------------------------------\n";
