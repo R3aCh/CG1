@@ -173,6 +173,8 @@ void Node::drawJoint(){
   // (with glutwiredphere...)
   // XXX
 
+  glStencilFunc(GL_ALWAYS, id, 0xFF); // ORDER MATTERS!
+
   glutWireSphere(15.0, 10, 10);
 
   // END XXX
