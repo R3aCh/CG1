@@ -30,8 +30,8 @@ using namespace glm;
 using namespace std;
 
 // TODO: add menu Option for reset
-string Control::menuText[]= {"quit", "reset"};
-unsigned int Control::menuOptions[]= {1, 2};
+string Control::menuText[]= {"quit", "reset", "Euler rotation", "Trackball rotation"};
+unsigned int Control::menuOptions[]= {1, 2, 3, 4};
 
 // field of view (in degrees)
 GLfloat Control::fov= radians(40.0);
@@ -57,6 +57,8 @@ Control::LightSource Control::lightSource= {vec4(5.0, 5.0, 5.0, 1.0),
 					    vec4(1.0f, 1.0f, 1.0f, 1.0f)};
 
 SceneGraph *Control::sceneGraph= NULL;
+
+enum RotationMode Control::rotationMode;
 
 void Control::init(){
 
@@ -257,8 +259,14 @@ bool Control::menu(int id){
     
     // XXX: add more options (optional)
 
-    // INSERT YOUR CODE HERE
-    
+  case 3:
+    rotationMode = EULER;
+    break;
+
+  case 4:
+    rotationMode = TRACKBALL;
+    break;
+
     
     // END XXX
 
@@ -320,29 +328,31 @@ void quaterionToEulerianAngle(const vec4& q, float& pitch, float& roll, float& y
 // mouse dragged control
 bool Control::mouseDragged(vec2 previousMouse, vec2 mouse, vec2 windowSize){
 
-  //sceneGraph->rotate(mouse.y-previousMouse.y, mouse.x-previousMouse.x, 0);
+  if (rotationMode == EULER)
+    sceneGraph->rotate(mouse.y-previousMouse.y, mouse.x-previousMouse.x, 0);
+  else {
+    // transform mouse coordinates into points on our virtual trackball sphere
+    vec3 previousPos, pos;
+    mousePositionToSpherePoint(previousMouse.x, previousMouse.y, windowSize.x, windowSize.y, previousPos);
+    mousePositionToSpherePoint(mouse.x, mouse.y, windowSize.x, windowSize.y, pos);
 
-  // transform mouse coordinates into points on our virtual trackball sphere
-  vec3 previousPos, pos;
-  mousePositionToSpherePoint(previousMouse.x, previousMouse.y, windowSize.x, windowSize.y, previousPos);
-  mousePositionToSpherePoint(mouse.x, mouse.y, windowSize.x, windowSize.y, pos);
+    // our rotation axis and angle
+    vec3 axis = cross(previousPos, pos);
 
-  // our rotation axis and angle
-  vec3 axis = cross(previousPos, pos);
+    // fill a quaternion with the rotation axis and the rotation angle
+    vec4 quat;
+    quat.x = axis.x;
+    quat.y = axis.y;
+    quat.z = axis.z;
+    quat.w = dot(previousPos, pos);
 
-  // fill a quaternion with the rotation axis and the rotation angle
-  vec4 quat;
-  quat.x = axis.x;
-  quat.y = axis.y;
-  quat.z = axis.z;
-  quat.w = dot(previousPos, pos);
+    // now transform the quaternion into Euler angles
+    float pitch, roll, yaw;
+    quaterionToEulerianAngle(quat, pitch, roll, yaw);
 
-  // now transform the quaternion into Euler angles
-  float pitch, roll, yaw;
-  quaterionToEulerianAngle(quat, pitch, roll, yaw);
-
-  // apply the rotation to the currently selected object
-  sceneGraph->rotate(true ? -roll * 180.0f/M_PI : 0.0f,  true ? -pitch * 180.0f/M_PI : 0.0f, true ? -yaw * 180.0f/M_PI : 0.0f);
+    // apply the rotation to the currently selected object
+    sceneGraph->rotate(true ? -roll * 180.0f/M_PI : 0.0f,  true ? -pitch * 180.0f/M_PI : 0.0f, true ? -yaw * 180.0f/M_PI : 0.0f);
+  }
 
   return true; //always redisplay
 }

@@ -13,6 +13,7 @@
 #include <iostream>
 
 #include "Node.hpp"
+#include "Control.hpp"
 #include "Context.hpp"
 #include "Debug.hpp"
 
@@ -211,7 +212,7 @@ void Node::drawJoint(){
 }
 
 void Node::drawVirtualTrackball(){
-  if (!selected) return;
+  if (!selected || Control::rotationMode != TRACKBALL) return;
 
   float a = std::abs(joint.x) + dimension.x/2;
   float b = std::abs(joint.y) + dimension.y/2;

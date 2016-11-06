@@ -13,6 +13,7 @@
 #include "glm/glm.hpp"
 
 #include "SceneGraph.hpp"
+#include "RotationMode.hpp"
 
 class Control{
 
@@ -69,6 +70,8 @@ public:
 
   // mouse menu control                                                         
   static bool menu(int id);
+
+  static enum RotationMode rotationMode;
 
 protected:
   
