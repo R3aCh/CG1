@@ -53,7 +53,7 @@ private:
   
   // reshape callback
   static void reshape(int width, int height);
-  
+
   // mouse pressed/released callback
   static void mouseButton(int button, int state, int x, int y);
   

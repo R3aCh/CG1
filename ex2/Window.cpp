@@ -22,7 +22,18 @@ Window::Window(Window *parent, string title, vec2 position, vec2 size) :
 
   glutInitWindowPosition(position.x, position.y);
   glutInitWindowSize(size.x, size.y);
-  id= glutCreateWindow(title.c_str());
+
+  // id = glutCreateWindow(title.c_str());
+  //--------------#CHANGED-----------------
+  //this->parent = parent;
+  if (parent != NULL){
+	  // get parent window position
+	  id = glutCreateSubWindow(parent->id, position.x, position.y, size.x, size.y);
+  }
+  else{
+	  id = glutCreateWindow(title.c_str());
+  }
+  //--------------#CHANGED-----------------
 }
 
 // get width
