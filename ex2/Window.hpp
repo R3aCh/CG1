@@ -52,9 +52,4 @@ private:
   GLuint id;
   // window title 
   std::string title;
-
-  //--------------#CHANGED-----------------
-  // parent window
-  Window *parent;
-  //--------------#CHANGED-----------------
 };

@@ -45,17 +45,14 @@ GLvoid * Context::font= GLUT_BITMAP_HELVETICA_10;
 
 Window Context::Main::window, Context::World::window, Context::Screen::window, Context::Command::window;
 
-//--------------#CHANGED-----------------
-Window Context::Clip::window;
-//--------------#CHANGED-----------------
 void Context::createWindows(void){
 
-  Main::window= Window(NULL, TITLE, POSITION, vec2(3*SIZE.x+4*GAP, 2*SIZE.y+3*GAP)); // 2/3 -> 3/4
+  Main::window= Window(NULL, TITLE, POSITION, vec2(2*SIZE.x+3*GAP, 2*SIZE.y+3*GAP));
   glutDisplayFunc(Projection::display);
   glutReshapeFunc(Context::reshape);
   glutKeyboardFunc(Projection::keyPressed);
 
-  World::window = Window(&Main::window, "World-space view", vec2(GAP, GAP), SIZE);
+  World::window= Window(&Main::window, "World-space view", vec2(GAP, GAP), SIZE);
   glutDisplayFunc(Projection::World::display);
   glutKeyboardFunc(Projection::keyPressed);
   glutCreateMenu(Projection::World::menu);
@@ -63,7 +60,7 @@ void Context::createWindows(void){
   for(int i= 0; i<menuEntries.size(); i++) glutAddMenuEntry(menuEntries[i].second.c_str(), menuEntries[i].first);
   glutAttachMenu(GLUT_RIGHT_BUTTON);
 
-  Screen::window = Window(&Main::window, "Screen-space view", vec2(SIZE.x + 2 * GAP, GAP), SIZE);
+  Screen::window= Window(&Main::window, "Screen-space view", vec2(SIZE.x+2*GAP, GAP), SIZE);
   glutDisplayFunc(Projection::Screen::display);
   glutKeyboardFunc(Projection::keyPressed);
   glutCreateMenu(Projection::Screen::menu);
@@ -71,7 +68,7 @@ void Context::createWindows(void){
   for(int i= 0; i<menuEntries.size(); i++) glutAddMenuEntry(menuEntries[i].second.c_str(), menuEntries[i].first);
   glutAttachMenu(GLUT_RIGHT_BUTTON);
 
-  Command::window= Window(&Main::window, "Command manipulation window", vec2(GAP, SIZE.y+2*GAP), vec2(3*SIZE.x+2*GAP, SIZE.y));
+  Command::window= Window(&Main::window, "Command manipulation window", vec2(GAP, SIZE.y+2*GAP), vec2(2*SIZE.x+GAP, SIZE.y));
   glutDisplayFunc(Projection::Command::display);
   glutMouseFunc(Context::mouseButton);
   glutMotionFunc(Context::mouseMoved);
@@ -80,16 +77,6 @@ void Context::createWindows(void){
   menuEntries= Projection::Command::getMenuEntries();
   for(int i= 0; i<menuEntries.size(); i++) glutAddMenuEntry(menuEntries[i].second.c_str(), menuEntries[i].first);
   glutAttachMenu(GLUT_RIGHT_BUTTON);
-
-  //--------------#CHANGED-----------------
-  Clip::window = Window(&Main::window, "Clip Space View", vec2(2 * SIZE.x + 3 * GAP, GAP), SIZE);
-  glutDisplayFunc(Projection::Clip::display);
-  glutKeyboardFunc(Projection::keyPressed);
-  glutCreateMenu(Projection::Clip::menu);
-  menuEntries = Projection::Clip::getMenuEntries();
-  for (int i = 0; i<menuEntries.size(); i++) glutAddMenuEntry(menuEntries[i].second.c_str(), menuEntries[i].first);
-  glutAttachMenu(GLUT_RIGHT_BUTTON);
-  //--------------#CHANGED-----------------
 }
 
 void Context::init(int argc, char **argv){
@@ -110,10 +97,6 @@ void Context::redisplayAll(void){
   glutPostRedisplay();
   Command::window.makeCurrent();
   glutPostRedisplay();
-  //--------------#CHANGED-----------------
-  Clip::window.makeCurrent();
-  glutPostRedisplay();
-  //--------------#CHANGED-----------------
 }
 
 // select glut bitmap font
@@ -159,8 +142,8 @@ void Context::drawString(float x, float y, float z, string s){
 void Context::reshape(int width, int height){
 
   Projection::reshape(width, height);
-  
-  float subWidth= (width-4*GAP)/3.0f; // 3/2 -> 4/3
+
+  float subWidth= (width-3*GAP)/2.0f;
   float subHeight= (height-3*GAP)/2.0f;
   
   World::window.makeCurrent();
@@ -177,18 +160,11 @@ void Context::reshape(int width, int height){
   Command::window.reposition(GAP, subHeight+2*GAP);
   Command::window.reshape(width-2*GAP, subHeight);
   Projection::Command::reshape(width-2*GAP, subHeight);
-
-  //--------------#CHANGED-----------------
-  Clip::window.makeCurrent();
-  Clip::window.reposition(2*subWidth + 3 * GAP, GAP);
-  Clip::window.reshape(subWidth, subHeight);
-  Projection::Clip::reshape(subWidth, subHeight);
-  //--------------#CHANGED-----------------
 }
 
 void Context::drawTitles(void){
 
-  float subWidth= (Main::window.width()-4*GAP)/3.0f; // 3/2 -> 4/3
+  float subWidth= (Main::window.width()-3*GAP)/2.0f;
   float subHeight= (Main::window.height()-3*GAP)/2.0f;
 
   setFont("helvetica", 12);
@@ -197,11 +173,7 @@ void Context::drawTitles(void){
 
   drawString(GAP+subWidth+GAP, GAP-5, Screen::window.getTitle());
   
-  drawString(GAP, subHeight + 2 * GAP - 5, Command::window.getTitle());
-
-  //--------------#CHANGED-----------------
-  drawString(GAP + 2* subWidth + GAP, GAP - 5, Clip::window.getTitle());
-  //--------------#CHANGED-----------------
+  drawString(GAP, subHeight+2*GAP-5, Command::window.getTitle());
 }
   
 // mouse button callback

@@ -234,10 +234,6 @@ void Mesh::loadOBJ(const string& filename){
   // and / or texture coordinates
   clean();
   
-  //--------------#CHANGED-----------------
-  parseMaterials(filename.substr(0, filename.find_last_of(".")) + ".mtl");
-  //--------------#CHANGED-----------------
-
   cout << "loaded " << filename << ": " 
        << positions.size() << " vertices, " << texCoordsRaw.size() << " texture coordinates, " << normalsRaw.size() << " normals, "
        << faces.size() << " faces, " << ((int)groups.size()-2) << " groups, " << materials.size() << " materials" << endl;

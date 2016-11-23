@@ -274,7 +274,7 @@ void Projection::World::menu(int value){
   
   switch (value) {
   case 'm':
-    drawMesh = !drawMesh;
+    drawMesh= !drawMesh;
     glutPostRedisplay();
     break;
   default:
@@ -391,7 +391,7 @@ bool Projection::Clip::drawClipPlanes= false;
 float Projection::Clip::angle= 0.0;
 
 void Projection::Clip::reshape(int width, int height){
-	//glViewport(0, 0, width, height);
+
 }    
 
 // this is where all the clip-space 'magic' happens
@@ -405,27 +405,10 @@ void Projection::Clip::mouseDragged(glm::vec2 previousMouse, glm::vec2 mouse){
 
 void Projection::Clip::menu(int value){
 
-	switch (value){
-	case 0:
-		cout << 0 << endl;
-		Context::redisplayAll();
-		break;
-	case 1:
-		cout << 1 << endl;
-		Context::redisplayAll();
-		break;
-	default:
-		break;
-	}
 }
 
 vector< pair < int, string > > Projection::Clip::getMenuEntries(void){
-	vector< pair < int, string > > menuEntries;
 
-	menuEntries.push_back(pair<int, string>(0, "Toggle Model"));
-	menuEntries.push_back(pair<int, string>(1, "Toggle Planes"));
-
-	return menuEntries;
 }
 
 // -------------------------------------------------------
