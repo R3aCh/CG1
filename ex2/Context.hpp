@@ -44,7 +44,16 @@ private:
 
   class Screen{ public: static Window window; };
 
-  class Clip{ public: static Window window; };
+  //--------------#CHANGED-----------------
+  class Clip{ 
+  public: 
+	  static Window window; 
+  
+	  static void mouseButton(int button, int state, int x, int y);
+
+	  static void mouseMoved(int x, int y);
+  };
+  //--------------#CHANGED-----------------
 
   class Command{ public: static Window window; };
   

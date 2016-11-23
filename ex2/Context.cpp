@@ -85,6 +85,8 @@ void Context::createWindows(void){
   Clip::window = Window(&Main::window, "Clip Space View", vec2(2 * SIZE.x + 3 * GAP, GAP), SIZE);
   glutDisplayFunc(Projection::Clip::display);
   glutKeyboardFunc(Projection::keyPressed);
+  glutMouseFunc(Context::Clip::mouseButton);
+  glutMotionFunc(Context::Clip::mouseMoved);
   glutCreateMenu(Projection::Clip::menu);
   menuEntries = Projection::Clip::getMenuEntries();
   for (int i = 0; i<menuEntries.size(); i++) glutAddMenuEntry(menuEntries[i].second.c_str(), menuEntries[i].first);
@@ -223,8 +225,35 @@ void Context::mouseButton(int button, int state, int x, int y){
 void Context::mouseMoved(int x, int y){
 
   if(mouse.pressed){
-    if(Command::window.isCurrent()) Projection::Command::mouseDragged(mouse.position, vec2(x,y));
+	  if (Command::window.isCurrent()){
+		  Projection::Command::mouseDragged(mouse.position, vec2(x, y));
+	  }
   }
- 
+
   mouse.position= vec2(x,y);
 }
+
+//--------------#CHANGED-----------------
+// mouse button callback
+void Context::Clip::mouseButton(int button, int state, int x, int y){
+
+	if (state == GLUT_DOWN){
+		mouse.pressed = true;
+		if (Clip::window.isCurrent()) Context::Clip::mouseMoved(x, y);
+	}
+
+	mouse.position = vec2(x, y);
+}
+
+// command mouse moved callback
+void Context::Clip::mouseMoved(int x, int y){
+
+	if (mouse.pressed){
+		if (Clip::window.isCurrent()){
+			Projection::Clip::mouseDragged(mouse.position, vec2(x, y));
+		}
+	}
+
+	mouse.position = vec2(x, y);
+}
+//--------------#CHANGED-----------------

@@ -377,8 +377,6 @@ void Projection::Screen::menu(int value){
   }
 }
 
-
-
 // -------------------------------------------------------
 // CLIP-SPACE VIEW
 // -------------------------------------------------------
@@ -391,24 +389,33 @@ bool Projection::Clip::drawClipPlanes= false;
 float Projection::Clip::angle= 0.0;
 
 void Projection::Clip::reshape(int width, int height){
-	//glViewport(0, 0, width, height);
+	glViewport(0, 0, width, height);
 }    
 
 // this is where all the clip-space 'magic' happens
 void Projection::Clip::display(void){
+	if (drawMesh){
+		glEnable(GL_LIGHTING);
+		glEnable(GL_LIGHT0);
+		glLightfv(GL_LIGHT0, GL_POSITION, &lightPosition[0]);
+		// smooth shading
+		glShadeModel(GL_SMOOTH);
 
+		mesh.draw();
+		glDisable(GL_LIGHTING);
+	}
 }
 
 void Projection::Clip::mouseDragged(glm::vec2 previousMouse, glm::vec2 mouse){
-
+	cout << "Direction x: " << mouse.x - previousMouse.x << " || Direction y: " << mouse.y - previousMouse.y << endl;
 }
 
 void Projection::Clip::menu(int value){
 
 	switch (value){
 	case 0:
-		cout << 0 << endl;
-		Context::redisplayAll();
+		drawMesh = !drawMesh;
+		glutPostRedisplay();
 		break;
 	case 1:
 		cout << 1 << endl;
@@ -587,7 +594,7 @@ void Projection::Command::display(void){
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
   glColor3ub(255,255,255);
-    
+
   Context::setFont("helvetica", 18);
     
   if(projectionMode == PERSPECTIVE){
